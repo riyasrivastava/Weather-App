@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Weather Report</string>
+    <string name="current">CURRENTLY</string>
+    <string name="tempdesc">Partly cloudy</string>
+    <string name="tempfeels">Feels like</string>
+</resources>
