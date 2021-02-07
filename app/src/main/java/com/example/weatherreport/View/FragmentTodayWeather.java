@@ -1,6 +1,7 @@
 package com.example.weatherreport.View;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -42,6 +43,7 @@ public class FragmentTodayWeather extends Fragment {
     private static final int locationRequestCode = 1000;
     private static final String API_KEY = "7cc03f1c69e5a31f837468766f3ab4b2";
     private double wayLatitude = 0.0, wayLongitude = 0.0;
+    SendMessage sendMsg;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,6 +83,7 @@ public class FragmentTodayWeather extends Fragment {
                         else{
                             ((MainActivity) getActivity()).setActionBarTitle(address[0]);
                         }
+                        sendMsg.sendData(wayLatitude,wayLongitude);
                         WeatherViewModelFactory params = new WeatherViewModelFactory(wayLatitude, wayLongitude, API_KEY);
                         viewModel = ViewModelProviders.of(this, params).get(WeatherViewModel.class);
                         observeViewModel();
@@ -114,6 +117,7 @@ public class FragmentTodayWeather extends Fragment {
                                 else{
                                     ((MainActivity) getActivity()).setActionBarTitle(address[0]);
                                 }
+                                sendMsg.sendData(wayLatitude,wayLongitude);
                                 WeatherViewModelFactory params = new WeatherViewModelFactory(wayLatitude, wayLongitude, API_KEY);
                                 viewModel = ViewModelProviders.of(this, params).get(WeatherViewModel.class);
                                 observeViewModel();
@@ -142,8 +146,24 @@ public class FragmentTodayWeather extends Fragment {
                 .load("https://openweathermap.org/img/w/"+weatherDataModel.current.weather.get(0).icon+".png")
                 .into(weatherImage);
             Log.i("REpo","temprature "+weatherDataModel.current.temp);
-
+            Log.i("REpo","1st day data "+weatherDataModel.daily.get(0).dt+" "+weatherDataModel.daily.get(0).weather.get(0).description+" "+weatherDataModel.daily.get(0).temp.max);
+            Log.i("REpo","6st day data "+weatherDataModel.daily.get(5).dt+" "+weatherDataModel.daily.get(5).weather.get(0).description+" "+weatherDataModel.daily.get(5).temp.max);
         });
+    }
+
+    interface SendMessage {
+        void sendData(double lat,double lang);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            sendMsg = (SendMessage) getActivity();
+        } catch (ClassCastException e) {
+            throw new ClassCastException("Error in retrieving data. Please try again");
+        }
     }
 
     @Override

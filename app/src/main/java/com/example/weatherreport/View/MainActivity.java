@@ -23,7 +23,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FragmentTodayWeather.SendMessage{
 
     private WeatherService service;
     private Toolbar toolbar;
@@ -54,5 +54,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void setActionBarTitle(String title){
         getSupportActionBar().setTitle(title);
+    }
+
+    @Override
+    public void sendData(double lat, double lang) {
+        String tag = "android:switcher:" + R.id.viewPager + ":" + 1;
+        FragmentEightDaysWeather f = (FragmentEightDaysWeather) getSupportFragmentManager().findFragmentByTag(tag);
+        f.getData(lat,lang);
     }
 }

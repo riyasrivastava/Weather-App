@@ -12,7 +12,7 @@ public class WeatherViewModelFactory implements ViewModelProvider.Factory {
     public WeatherViewModelFactory(double a,double b, String param) {
         this.lat = a;
         this.lang = b;
-        mParam = param;
+        this.mParam = param;
     }
     @Override
     public <T extends ViewModel> T create(Class<T> modelClass) {
